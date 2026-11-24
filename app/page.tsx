@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 
-const API_BASE_URL = 'http://localhost:5000/api/v1';
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
 export default function PostDetailClient({ slug }: { slug: string }) {
   const [post, setPost] = useState<any>(null);

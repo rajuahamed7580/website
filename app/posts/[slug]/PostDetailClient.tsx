@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
 
-const API_BASE_URL = 'http://localhost:5000/api/v1';
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL ;
 
 export default function PostDetailClient() {
   const params = useParams();
@@ -32,6 +32,14 @@ export default function PostDetailClient() {
       .then((data) => {
         if (data?.data?.post) {
           setPost(data.data.post);
+          if (data.data.post.title) {
+            const shortTitle =
+              data.data.post.title
+                .split(/\p{Extended_Pictographic}/u)
+                .map((part: string) => part.trim())
+                .find(Boolean) || data.data.post.title.trim();
+            document.title = `Review for ${shortTitle} | PrivateDelights`;
+          }
           setReviews(data.data.reviews || []);
           setNavigation(data.data.navigation || { previous: null, next: null });
         }
