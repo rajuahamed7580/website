@@ -25,10 +25,6 @@ function extractShortTitle(title: string) {
 export default function ProfileDetailView({ customPath }: ProfileDetailViewProps) {
   const [post, setPost] = useState<any>(null);
   const [reviews, setReviews] = useState<any[]>([]);
-  const [navigation, setNavigation] = useState<{ previous: any; next: any }>({
-    previous: null,
-    next: null
-  });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -72,7 +68,6 @@ export default function ProfileDetailView({ customPath }: ProfileDetailViewProps
           }
 
           setReviews(data.data.reviews || []);
-          setNavigation(data.data.navigation || { previous: null, next: null });
         }
       })
       .catch((err) => {
@@ -120,9 +115,12 @@ export default function ProfileDetailView({ customPath }: ProfileDetailViewProps
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-white text-gray-700 flex flex-col justify-center items-center font-sans">
-        <div className="w-8 h-8 border-4 border-blue-600 border-t-transparent rounded-full animate-spin mb-3"></div>
-        <p className="text-sm font-semibold text-gray-500">Loading dynamic profile from backend...</p>
+      <div className="min-h-screen bg-white flex justify-center items-center">
+        <div
+          role="status"
+          aria-label="Loading"
+          className="w-8 h-8 border-4 border-blue-600 border-t-transparent rounded-full animate-spin"
+        />
       </div>
     );
   }
@@ -160,26 +158,6 @@ export default function ProfileDetailView({ customPath }: ProfileDetailViewProps
 
       {/* Main Single Profile Container */}
       <main className="max-w-2xl mx-auto px-4 py-8">
-        {/* Prev / Next Navigation */}
-        <div className="flex justify-between items-center text-xs text-blue-600 mb-4">
-          {navigation.previous?.path ? (
-            <a href={navigation.previous.path} className="hover:underline flex items-center space-x-1">
-              <span>‹</span>
-              <span>Previous: {navigation.previous.displayName || navigation.previous.title}</span>
-            </a>
-          ) : (
-            <span></span>
-          )}
-          {navigation.next?.path ? (
-            <a href={navigation.next.path} className="hover:underline flex items-center space-x-1">
-              <span>Next: {navigation.next.displayName || navigation.next.title}</span>
-              <span>›</span>
-            </a>
-          ) : (
-            <span></span>
-          )}
-        </div>
-
         {/* Dynamic Image Carousel with Nav buttons */}
         <div className="relative flex justify-center items-center my-4">
           <button
